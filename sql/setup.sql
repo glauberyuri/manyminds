@@ -5,7 +5,9 @@ create table users (
 	cpf varchar(11) null,
 	password varchar(32) comment 'hash MD5' null,
     status tinyint(1) default 1 not null,
-	phone varchar(11) null
+	phone varchar(11) null,
+	add constraint users_uk
+		unique (email)
 );
 
 create table address (

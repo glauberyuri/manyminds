@@ -44,7 +44,7 @@ class Auth extends CI_Controller {
 		} else {
 			$data = array(
 				'email' => $email,
-				'password' => $password
+				'password' => md5($password)
 			);
 
 			$user = new UserModel;

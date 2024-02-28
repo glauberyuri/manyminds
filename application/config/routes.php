@@ -64,4 +64,5 @@ $route['users']['GET'] = 'users/index';
 $route['allusers']['GET'] = 'users/getUsers';
 $route['users/toggle-status']['POST'] = 'users/toggleStatus';
 $route['create']['GET'] = 'users/create';
+$route['create']['POST'] = 'users/createUser';
 
