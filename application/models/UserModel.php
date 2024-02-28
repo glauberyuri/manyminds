@@ -22,7 +22,10 @@ class UserModel extends CI_Model {
 			return false;
 		}
 	}
-
+	public function createUser($user)
+	{
+		return $this->db->insert('users',$user);
+	}
 	public function getUsers()
 	{
 		$this->db->select('

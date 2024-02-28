@@ -71,3 +71,43 @@ function bindEvents()
 }
 
 bindEvents();
+
+
+$(".submit").on('click', function(ev) {
+	ev.preventDefault();
+	$.ajax({
+		type: "POST",
+		url: BASE_URL+"create",
+		data: $('.form_input').serialize(),
+		dataType: 'json',
+		success: function(response) {
+			// redirects or performs other actions according to success
+			if (response.error) {
+				alert(response.error);
+			} else if (response.success) {
+				window.location.href = response.redirect;
+			}
+		},
+		error: function(response) {
+			console.log('Erro na requisição AJAX');
+		},
+	});
+})
+
+
+
+$(".addAddress").on('click', function (ev) {
+	let model = $('.address').first().html();
+	$('.addresses').append('<div class="address row">'+model+'</div>')
+	bindEventsAddress();
+
+});
+
+function bindEventsAddress()
+{
+	$(".removeAddress").on('click', function (ev) {
+		$(this).parents('div.address').remove();
+	})
+}
+
+bindEventsAddress();
