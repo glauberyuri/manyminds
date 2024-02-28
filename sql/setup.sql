@@ -25,3 +25,8 @@ create table address (
         on delete cascade
 );
 
+CREATE TABLE `auth_tokens` ( `id` INT NOT NULL AUTO_INCREMENT ,
+							 `user_id` INT(11) NOT NULL , `token` VARCHAR(255) NOT NULL ,
+							 `expiry_date` VARCHAR(50) NOT NULL ,
+							 `created_at` VARCHAR(50) NOT NULL ,
+							 PRIMARY KEY (`id`)) ENGINE = InnoDB;
