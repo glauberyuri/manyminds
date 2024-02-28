@@ -19,7 +19,6 @@ class Users extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->helper('url');
 		$this->load->view('template/default', array(
 			'title' => 'Usuarios',
 			'view' => 'users/index'
@@ -28,7 +27,29 @@ class Users extends CI_Controller {
 
 	public function create()
 	{
-		
+		$this->load->view('template/default', array(
+			'title' => 'Novo Usuario',
+			'view' => 'users/create'
+		));
+	}
+
+	public function createUser()
+	{
+		$user = array(
+			'name' => $this->security->xss_clean($this->input->post('name')),
+			'cpf' =>$this->security->xss_clean($this->input->post('cpf')),
+			'phone' => $this->security->xss_clean($this->input->post('phone')),
+			'password' => md5($this->input->post('password')),
+			'email' => $this->security->xss_clean($this->input->post('email'))
+		);
+
+		$result = array(
+			'success' => $this->UserModel->createUser($user),
+			'redirect' => base_url('users')
+		);
+		$this->output->set_content_type('application/json');
+
+		return $this->output->set_output(json_encode($result));
 	}
 
 	public function getUsers ()
