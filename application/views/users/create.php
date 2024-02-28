@@ -18,23 +18,25 @@
 						<div class="col-sm-6">
 							<label for="firstName" class="form-label">Nome Completo</label>
 							<input type="text" class="form-control" name="name" id="firstName" placeholder="" value="" required>
-							<div class="invalid-feedback">
-								Seu nome é obrigatorio.
+							<div class="text-danger error_name">
+
 							</div>
 						</div>
 
 						<div class="col-sm-6">
 							<label for="lastName" class="form-label">CPF</label>
 							<input type="text" class="form-control" name="cpf" id="cpfcode" placeholder="" value="" required>
+							<div class="text-danger error_cpf">
+
+							</div>
 						</div>
 
 						<div class="col-6">
 							<label for="username" class="form-label">Senha</label>
 							<div class="input-group has-validation">
-								<input type="text" class="form-control" name="password" id="password" placeholder="****" required>
-								<div class="invalid-feedback">
-									Obrigatorio preencher o celular.
-								</div>
+								<input type="password" class="form-control" name="password" id="password" placeholder="****" required>
+							</div>
+							<div class="text-danger error_password">
 							</div>
 						</div>
 
@@ -42,25 +44,23 @@
 							<label for="username" class="form-label">Celular</label>
 							<div class="input-group has-validation">
 								<input type="text" class="form-control" name="phone" id="phone" placeholder="Celular" required>
-								<div class="invalid-feedback">
-									Obrigatorio preencher o celular.
-								</div>
+							</div>
+							<div class="text-danger error_phone">
 							</div>
 						</div>
 
 						<div class="col-12">
 							<label for="email" class="form-label">Email</label>
 							<input type="email" class="form-control" name="email" id="email" placeholder="seu-email@exemplo.com" required>
-							<div class="invalid-feedback">
-								Este campo é obrigatorio
+							<div class="text-danger error_email">
 							</div>
 						</div>
 
 						<hr class="my-4">
 
 						<div class="col-12 row g-2">
-							<div class="col-10"><h4 class="mb-3">Endereços</h4></div>
-							<div class="col-auto"><button type="button" class="btn btn-primary addAddress">Adicionar</button></div>
+							<div class="col-8"><h4 class="mb-3">Endereços</h4></div>
+							<div class="col-4 m-0 ps-4"><button type="button" class="btn btn-success addAddress">Adicionar Endereço</button></div>
 						</div>
 						<div class="addresses">
 							<div class="d-none address row">

@@ -13,6 +13,7 @@ class Users extends CI_Controller {
 			redirect('login');
 		}
 		$this->load->helper('form');
+		$this->load->library('form_validation');
 		$this->load->model('UserModel');
 
 	}
@@ -35,20 +36,45 @@ class Users extends CI_Controller {
 
 	public function createUser()
 	{
-		$user = array(
-			'name' => $this->security->xss_clean($this->input->post('name')),
-			'cpf' =>$this->security->xss_clean($this->input->post('cpf')),
-			'phone' => $this->security->xss_clean($this->input->post('phone')),
-			'password' => md5($this->input->post('password')),
-			'email' => $this->security->xss_clean($this->input->post('email'))
-		);
+		$this->form_validation->set_rules('name', 'nome completo', 'required');
+		$this->form_validation->set_rules('cpf', 'CPF', 'required|max_length[11]');
+		$this->form_validation->set_rules('phone', 'celular', 'required|max_length[11]');
+		$this->form_validation->set_rules('password', 'senha', 'required');
+		$this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
 
-		$result = array(
-			'success' => $this->UserModel->createUser($user),
-			'redirect' => base_url('users')
-		);
+		if($this->form_validation->run())
+			{
+				$user = array(
+					'name' => $this->security->xss_clean($this->input->post('name')),
+					'cpf' =>$this->security->xss_clean($this->input->post('cpf')),
+					'phone' => $this->security->xss_clean($this->input->post('phone')),
+					'password' => md5($this->input->post('password')),
+					'email' => $this->security->xss_clean($this->input->post('email'))
+				);
+
+				$this->UserModel->createUser($user);
+
+				$result = array(
+					'success' => '<div class="alert alert-success">Obrigado por cadastrar</div>',
+					'redirect' => base_url('users')
+				);
+
+
+			}
+		else
+			{
+				$result = array(
+					'error' => true,
+					'name_error' => form_error('name'),
+					'cpf_error' => form_error('cpf'),
+					'phone_error' => form_error('phone'),
+					'email_error' => form_error('email'),
+					'password_error' => form_error('password')
+				);
+			}
+
+
 		$this->output->set_content_type('application/json');
-
 		return $this->output->set_output(json_encode($result));
 	}
 
