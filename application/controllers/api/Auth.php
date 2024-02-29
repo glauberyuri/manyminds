@@ -58,15 +58,15 @@ class Auth extends RestApi_Controller
 
 
 		$this->form_validation->set_rules('email','Email','required');
-		$this->form_validation->set_rules('password','Pasword','required');
+		$this->form_validation->set_rules('password','Password','required');
 		if($this->form_validation->run())
 		{
 			$data = array('email'=>$email,'password'=> md5($password));
 			$loginStatus = $this->ApiModel->checkLogin($data);
 			if($loginStatus != false)
 			{
-				$idUser = $loginStatus->id;
-				$bearerToken = $this->ApiModel->generateToken($idUser);
+				$idUser = $loginStatus->idUser;
+				$bearerToken = $this->api_auth->generateToken($idUser);
 				$responseData = array(
 					'status'=> true,
 					'message' => 'Você esta logado',
