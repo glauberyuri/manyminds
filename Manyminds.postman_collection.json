@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "939a062a-5491-4baa-921f-28d58668ace7",
+		"name": "Manyminds",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24585157"
+	},
+	"item": [
+		{
+			"name": "Login Users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "glauberyuri160497@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://manyteste.test/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"manyteste",
+						"test"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Glauber",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "glauberyuri160497@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "38988090387",
+							"type": "text"
+						},
+						{
+							"key": "cpf",
+							"value": "13222886660",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://manyteste.test/api/auth/register",
+					"protocol": "http",
+					"host": [
+						"manyteste",
+						"test"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET User",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "ba99338e5ec6f8a41af3f1e5342f07f8493c2fb5e748717999b8201316fa072f.DECknXk3YizA5jpIGo/wtw==",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://manyteste.test/api/controller/getUser/12",
+					"protocol": "http",
+					"host": [
+						"manyteste",
+						"test"
+					],
+					"path": [
+						"api",
+						"controller",
+						"getUser",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET User Authenticated",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
