@@ -31,8 +31,6 @@ class Users extends CI_Controller {
 		$idUser= $this->uri->segment(3);
 		$dados['dataView']['preview']=0;
 		$partTitle='Editar';
-		print_r($idUser);
-
 		if(empty($idUser)){
 			$idUser= $this->uri->segment(2);
 			if(!empty($idUser) && $idUser!='create'){
@@ -42,17 +40,13 @@ class Users extends CI_Controller {
 		}
 		if(!empty($idUser) && $idUser!='create'){
 			$dados['dataView']['user']= $this->UserModel->getUser($idUser);
-			if(empty($dados['dataView']['user'])){
+			if(empty($dados['dataView']['user']) || empty($dados['dataView']['user']['status'])){
 				return redirect(base_url('users'));
 			}
-			$dados['dataView']['title'] = "{$partTitle} usuario: ".$dados['dataView']['user']->name;
+			$dados['dataView']['title'] = "{$partTitle} usuario: ".$dados['dataView']['user']['name'];
 		}
 		$dados['view']='users/create';
-
-		$this->load->view('template/default', array(
-			'view' => 'users/create',
-			'data' => $dados
-		));
+		$this->load->view('template/default', $dados);
 	}
 
 	public function createUser()
@@ -60,25 +54,51 @@ class Users extends CI_Controller {
 		$this->form_validation->set_rules('name', 'nome completo', 'required');
 		$this->form_validation->set_rules('cpf', 'CPF', 'required|max_length[11]');
 		$this->form_validation->set_rules('phone', 'celular', 'required|max_length[11]');
-		$this->form_validation->set_rules('password', 'senha', 'required');
+		if(!empty($this->input->post('password')))
+		{
+			$this->form_validation->set_rules('password', 'senha', 'required');
+		}
 		$this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
 
-		if($this->form_validation->run())
+		if($this->form_validation->run()) {
+			$user = array(
+				'idUser' => $this->input->post('idUser'),
+				'name' => $this->security->xss_clean($this->input->post('name')),
+				'cpf' => $this->security->xss_clean($this->input->post('cpf')),
+				'phone' => $this->security->xss_clean($this->input->post('phone')),
+				'email' => $this->security->xss_clean($this->input->post('email')),
+				'address' => []
+			);
+			if(!empty($this->input->post('password')))
 			{
-				$user = array(
-					'name' => $this->security->xss_clean($this->input->post('name')),
-					'cpf' =>$this->security->xss_clean($this->input->post('cpf')),
-					'phone' => $this->security->xss_clean($this->input->post('phone')),
-					'password' => md5($this->input->post('password')),
-					'email' => $this->security->xss_clean($this->input->post('email'))
+				$user['password'] = md5($this->input->post('password'));
+			}
+			foreach ($this->input->post('cep') as $i => $address) {
+				if ($i == 0) continue;
+				$user['address'][] = array(
+					'cep' => $this->input->post('cep')[$i] ?? '',
+					'street' => $this->input->post('street')[$i] ?? '',
+					'number' => $this->input->post('number')[$i] ?? '',
+					'block' => $this->input->post('block')[$i] ?? '',
+					'city' => $this->input->post('city')[$i] ?? '',
+					'state' => $this->input->post('state')[$i] ?? '',
+					'country' => $this->input->post('country')[$i] ?? '',
 				);
-
-				$this->UserModel->createUser($user);
-
+			}
+			if ($this->UserModel->createUser($user)) {
 				$result = array(
 					'success' => '<div class="alert alert-success">Obrigado por cadastrar</div>',
 					'redirect' => base_url('users')
 				);
+			} else
+			{
+				$result = array(
+					'error' => true,
+					'errorMsg' => '<div class="alert alert-danger">Nao foi possivel cadastrar</div>',
+				);
+			}
+
+
 
 
 			}

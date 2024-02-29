@@ -54,6 +54,7 @@
  * NOTE: If you change these, also change the error_reporting() code below
  */
 	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+//	define('ENVIRONMENT', 'production');
 
 /*
  *---------------------------------------------------------------
@@ -312,4 +313,5 @@ switch (ENVIRONMENT)
  *
  * And away we go...
  */
+date_default_timezone_set("America/Sao_Paulo");
 require_once BASEPATH.'core/CodeIgniter.php';

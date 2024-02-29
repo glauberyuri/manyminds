@@ -30,46 +30,64 @@ class Auth extends CI_Controller {
 		));
 	}
 
-	public function login() {
-		$this->load->library('session');
+	public function login()
+	{
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+		$this->form_validation->set_rules('password', 'Senha', 'required');
+
+		if($this->form_validation->run() === FALSE)
+		{
+			$response = array('error' => 'Email ou senha estão incorretos');
+			retornoJson($response);
+		}
 
 		$email = $this->input->post('email');
 		$password = $this->input->post('password');
 
-		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
-		$this->form_validation->set_rules('password', 'Senha', 'required');
-
-		if($this->form_validation->run() === FALSE) {
+		$user = new UserModel;
+		$userData = $user->getUserlogin($email);
+		if(empty($userData))
+		{
 			$response = array('error' => 'Email ou senha estão incorretos');
-		} else {
-			$data = array(
-				'email' => $email,
-				'password' => md5($password)
-			);
+			retornoJson($response);
+		}
 
-			$user = new UserModel;
-			$result = $user->loginUser($data);
-			if($result != FALSE)
-			{
-				$userdetails = array(
-					'name' => $result->name,
-					'cpf' => $result->cpf,
-					'phone' => $result->phone,
-					'idUser' => $result->idUser
-				);
-				if ($result->status == 1) {
-					$this->session->set_userdata('authenticated', 1);
-					$this->session->set_userdata('auth_user', $userdetails);
-					$response = array('success' => 'Logando com sucesso', 'redirect' => base_url('users'));
-				} else {
-					$response = array('error' => 'Usuario desativado!');
-				}
-			} else {
-				$response = array('error' => 'Email ou senha estão incorretos');
+		$block=  $user->getBlock($userData['idUser']);
+		if(!empty($block) && $block['count']>2){
+			$dataLimit = DateTime::createFromFormat('Y-m-d H:i:s', $block['dateBlock']);
+			$dataLimit->add(DateInterval::createFromDateString("3 minutes"))->format('Y-m-d H:i:s');
+			if($dataLimit > new DateTime('NOW')){
+				$response = array('error' => 'Usuario bloqueado!');
+				retornoJson($response);
+			}else{
+				$user->unBlock($userData['idUser']);
 			}
 		}
-		$this->output->set_content_type('application/json');
-		$this->output->set_output(json_encode($response));
+
+		if((string)$userData['password'] !== md5($password))
+		{
+			$response = array('error' => 'Email ou senha estão incorretos');
+			$user->blockIp($userData['idUser']);
+			retornoJson($response);
+		}
+		if(empty($userData['status']))
+		{
+			$response = array('error' => 'Usuario inativo!');
+			retornoJson($response);
+		}
+
+		$user->unBlock($userData['idUser']);
+		$userdetails = array(
+			'name' => $userData['name'],
+			'cpf' => $userData['cpf'],
+			'phone' => $userData['phone'],
+			'idUser' => $userData['idUser'],
+		);
+
+		$this->session->set_userdata('authenticated', 1);
+		$this->session->set_userdata('auth_user', $userdetails);
+		$response = array('success' => 'Logando com sucesso', 'redirect' => base_url('users'));
+		retornoJson($response);
 	}
 
 	public function logout()

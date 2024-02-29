@@ -82,8 +82,15 @@ $(".submit").on('click', function(ev) {
 		dataType: 'json',
 		success: function(response) {
 			// redirects or performs other actions according to success
-			console.log(response['name_error'])
+			$('.errorMsg').html('');
+			$('.error_name').html('');
+			$('.error_cpf').html('');
+			$('.error_phone').html('');
+			$('.error_email').html('');
+			$('.error_password').html('');
+
 			if (response.error) {
+				(response['errorMsg'] != '') ? $('.errorMsg').html(response['errorMsg']) : $('.errorMsg').html('');
 				(response['name_error'] != '') ? $('.error_name').html(response['name_error']) : $('.error_name').html('');
 				(response['cpf_error'] != '') ? $('.error_cpf').html(response['cpf_error']) : $('.error_cpf').html('');
 				(response['phone_error'] != '') ? $('.error_phone').html(response['phone_error']) : $('.error_phone').html('');
