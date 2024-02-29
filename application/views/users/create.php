@@ -69,7 +69,8 @@ $disabled= empty($dataView['preview']) ? '' : 'disabled';
 					</div>
 					<div class="addresses">
 						<?= $this->load->view('users/address',array(
-							'ismodel' => 1
+							'ismodel' => 1,
+							'disabled' => $disabled
 						), true); ?>
 						<?php foreach ($dataView['user']['address'] ?? [] as $address)
 							{

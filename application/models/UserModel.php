@@ -75,15 +75,15 @@ class UserModel extends CI_Model {
 			if(!empty($row['status']))
 			{
 				$row['action'] .=  '&nbsp;<a href="'.base_url('users/edit/'.$row['idUser']).'" class="btn btn-primary btn-sm">Editar</a>';
+				$row['action'] .=  '&nbsp;<a href="'.base_url('users/'.$row['idUser']).'" class="btn btn-secondary btn-sm">Detalhes</a>';
 			}
-			$row['action'] .=  '&nbsp;<a href="'.base_url('users/'.$row['idUser']).'" class="btn btn-secondary btn-sm">Detalhes</a>';
 			$row['action'] .= '<script>bindEvents();</script>';
 		}
 
 		return $data;
 	}
 
-	function getUser($idUser, $email)
+	function getUser($idUser, $email=null)
 	{
 		$this->db->select('*');
 		$this->db->from('users as u');
