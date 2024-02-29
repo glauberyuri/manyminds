@@ -10,7 +10,7 @@
 			<th>CPF</th>
 			<th>Celular</th>
 			<th>Cidade</th>
-			<th>Acoes</th>
+			<th>Ações</th>
 		</tr>
 		</thead>
 		<tbody>

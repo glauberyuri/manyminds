@@ -26,11 +26,32 @@ class Users extends CI_Controller {
 		));
 	}
 
-	public function create()
-	{
+	public function getNewUser(){
+		$dados['dataView']['title'] = 'Adicionar Usuario';
+		$idUser= $this->uri->segment(3);
+		$dados['dataView']['preview']=0;
+		$partTitle='Editar';
+		print_r($idUser);
+
+		if(empty($idUser)){
+			$idUser= $this->uri->segment(2);
+			if(!empty($idUser) && $idUser!='create'){
+				$dados['dataView']['preview']=1;
+				$partTitle='Detalhes do';
+			}
+		}
+		if(!empty($idUser) && $idUser!='create'){
+			$dados['dataView']['user']= $this->UserModel->getUser($idUser);
+			if(empty($dados['dataView']['user'])){
+				return redirect(base_url('users'));
+			}
+			$dados['dataView']['title'] = "{$partTitle} usuario: ".$dados['dataView']['user']->name;
+		}
+		$dados['view']='users/create';
+
 		$this->load->view('template/default', array(
-			'title' => 'Novo Usuario',
-			'view' => 'users/create'
+			'view' => 'users/create',
+			'data' => $dados
 		));
 	}
 

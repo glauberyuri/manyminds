@@ -41,6 +41,7 @@
 </footer>
 <script src="<?=base_url('assets/vendor/jquery-3.7.1.min.js') ?>"></script>
 <script src="<?=base_url('assets/vendor/bootstrap/js/bootstrap.min.js') ?>"></script>
+<script src="<?=base_url('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
 <script src="<?=base_url('assets/vendor/DataTables/datatables.min.js') ?>"></script>
 <script>
 	const BASE_URL = "<?=base_url()?>";
